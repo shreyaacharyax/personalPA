@@ -1,6 +1,6 @@
-// pages/signin.js
 import { useState } from 'react';
 import { auth } from '../lib/firebase';
+import { signInWithEmailAndPassword } from 'firebase/auth'; 
 
 export default function SignIn() {
   const [email, setEmail] = useState('');
@@ -9,11 +9,9 @@ export default function SignIn() {
   const handleSignIn = async (e) => {
     e.preventDefault();
     try {
-      await auth.signInWithEmailAndPassword(email, password);
-      // Handle successful sign-in
+      await signInWithEmailAndPassword(auth, email, password); // Correct usage
       alert('Signed in successfully');
     } catch (error) {
-      // Handle errors here
       alert(error.message);
     }
   };
