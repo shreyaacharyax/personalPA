@@ -1,14 +1,32 @@
 // contexts/AuthContext.js
-import { createContext, useState, useEffect } from 'react';
-import { auth } from '../lib/firebase';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import { initializeApp } from 'firebase/app';
 
-export const AuthContext = createContext();
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyA7PTj4e_f1qiTDxZLjN7DnEldYeNreKMQ",
+  authDomain: "customer-ai-29bb5.firebaseapp.com",
+  projectId: "customer-ai-29bb5",
+  storageBucket: "customer-ai-29bb5.appspot.com",
+  messagingSenderId: "301245408590",
+  appId: "1:301245408590:web:f4e28f8dd524c567652a1f",
+  measurementId: "G-GYDE38QM06"
+};
 
-export const AuthProvider = ({ children }) => {
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const AuthContext = createContext();
+
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(setUser);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
     return () => unsubscribe();
   }, []);
 
@@ -17,4 +35,8 @@ export const AuthProvider = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
-};
+}
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
