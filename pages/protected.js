@@ -1,13 +1,11 @@
-// pages/protected.js
-import { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+import { useAuth } from '/contexts/AuthContext' // Correct import
 
 export default function ProtectedPage() {
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth()
 
   if (!user) {
-    return <p>You need to sign in to access this page.</p>;
+    return <div>You need to be signed in to access this page.</div>
   }
 
-  return <div>Welcome, {user.email}!</div>;
+  return <div>Welcome, {user.email}!</div>
 }
